@@ -5,8 +5,7 @@ const Quiz = require('../models/quiz');
 exports.getAdminQuiz = (req, res, next) => {
     res.render('admin/quiz.ejs', {
         pageTitle: 'Admin Quiz',
-        path: '/admin/quiz',
-        isAuthenticated: req.session.isLoggedIn
+        path: '/admin/quiz'
     });
 
 };
@@ -23,8 +22,7 @@ exports.getAdminQuestions = (req, res, next) => {
                 res.render('admin/questions.ejs', {
                     pageTitle: 'Admin Questions',
                     path: '/admin/questions',
-                    quizId: quizId,
-                    isAuthenticated: req.session.isLoggedIn
+                    quizId: quizId
                 })
             }
         })
