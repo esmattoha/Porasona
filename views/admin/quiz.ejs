@@ -5,28 +5,51 @@
     <%- include('../includes/nav.ejs') %>
     <main>
         <form class="container" action="/admin/quiz" method="POST">
-           
+            <% if (errorMessage) { %>
+                <div ><%= errorMessage %></div>
+            <% } %>
             <div class="form-group">
                 <label for="title">Title </label>
-                <input class="form-control form-control-lg" type="text" id="title" name="title" >
-                
+                <input class="form-control"
+                    class="<%= validationErrors.find(e => e.param === 'title') ? 'invalid' : '' %>" 
+                    type="text"
+                    name="title" 
+                    id="title" 
+                    value="<%= oldInput.title %>">
+
             </div>
             <div class="form-group">
                 <label for="description">Description </label>
-                <textarea class="form-control  form-control-lg" type="text" id="description" name="description"   ></textarea>
+                <textarea class="form-control"
+                    class="<%= validationErrors.find(e => e.param === 'description') ? 'invalid' : '' %>" 
+                    type="text"
+                    name="description" 
+                    id="description" 
+                    value="<%= oldInput.description %>"></textarea>
             </div>
             <div class="form-group">
                 <label for="totalQuestion">Total Questions </label>
-                <input class="form-control form-control-lg" type = "number" id="totalQuestion" name="totalQuestion">
+                <input  class="form-control"
+                    class="<%= validationErrors.find(e => e.param === 'totalQuestion') ? 'invalid' : '' %>" 
+                    type="number"
+                    name="totalQuestion" 
+                    id="totalQuestion"
+                    value="<%= oldInput.totalQuestion %>">
             </div>
             <div class="form-group">
                 <label for="marks">Marks </label>
-                <input class="form-control form-control-lg"type="number"  name="marks" id="marks" >
+                <input  class="form-control"
+                    class="<%= validationErrors.find(e => e.param === 'marks') ? 'invalid' : '' %>" 
+                    type="number"
+                    name="marks" 
+                    id="marks" 
+                    step="0.01"
+                    value="<%= oldInput.marks %>">
             </div>
             <form action="/admin/questions" method="POST">
-                <input type="hidden" value="<%= csrfToken %>"  name="_csrf">
+                <input type="hidden" value="<%= csrfToken %>" name="_csrf">
                 <button type="submit" class="btn btn-primary">Submit</button>
-               
+
             </form>
         </form>
 

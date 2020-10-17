@@ -23,10 +23,6 @@ exports.getLogin = (req, res, next) => {
     },
     validationErrors: []
   });
-  // res.render('auth/login.ejs', {
-  //   path: '/login',
-  //   pageTitle: 'Login'
-  // });
 };
 
 exports.getSignup = (req, res, next) => {

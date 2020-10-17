@@ -5,9 +5,17 @@
    <%- include('../includes/nav.ejs') %>
 
 <form class="container" action="/admin/questions" method="POST">
+    <% if (errorMessage) { %>
+        <div ><%= errorMessage %></div>
+    <% } %>
     <div class="form-group">
         <label for="title">Question </label> 
-        <input class="form-control form-control-lg" type="text" placeholder="question" name="title" id="title">
+        <input class="form-control"
+                class="<%= validationErrors.find(e => e.param === 'title') ? 'invalid' : '' %>" 
+                type="text"
+                name="title" 
+                id="title" 
+                value="<%= oldInput.title %>">
     </div>
     <input type="hidden" name="quizId" value="<%= quizId %>">
     <div class="form-group">
@@ -15,19 +23,44 @@
         <div class="form-row">
             <div class="col-md-6 mb-3">
                 <label for="op1">Op 1 </label>
-                <input class="form-control form-control-lg" type="text" placeholder="op1" name="op1" id="op1">
+                <input class="form-control"
+                    class="<%= validationErrors.find(e => e.param === 'op1') ? 'invalid' : '' %>" 
+                    type="text"
+                    name="op1" 
+                    id="op1" 
+                    value="<%= oldInput.op1 %>">
                 <label for="op2">Op 2 </label>
-                <input class="form-control form-control-lg" type="text" placeholder="op2" name="op2" id="op2">
+                <input class="form-control"
+                    class="<%= validationErrors.find(e => e.param === 'op2') ? 'invalid' : '' %>" 
+                    type="text"
+                    name="op2" 
+                    id="op2" 
+                    value="<%= oldInput.op2 %>">
                 <label for="op3">Op 3 </label>
-                <input class="form-control form-control-lg" type="text" placeholder="op3" name="op3" id="op3">
+                <input class="form-control"
+                    class="<%= validationErrors.find(e => e.param === 'op3') ? 'invalid' : '' %>" 
+                    type="text"
+                    name="op3" 
+                    id="op3" 
+                    value="<%= oldInput.op3 %>">
                 <label for="op4">Op 4 </label>
-                <input class="form-control form-control-lg" type="text" placeholder="op4" name="op4" id="op4">
+                <input class="form-control"
+                    class="<%= validationErrors.find(e => e.param === 'op4') ? 'invalid' : '' %>" 
+                    type="text"
+                    name="op4" 
+                    id="op4" 
+                    value="<%= oldInput.op4 %>">
               </div>
             </div>
     </div>
     <div class="form-group">
         <label for="answer">Answer </label> 
-        <input class="form-control form-control-lg" type="text" placeholder="answer" name="answer" id="answer" >
+        <input class="form-control"
+            class="<%= validationErrors.find(e => e.param === 'answer') ? 'invalid' : '' %>" 
+            type="text"
+            name="answer" 
+            id="answer" 
+            value="<%= oldInput.answer %>">
     </div>
     
     <form action="/admin/questions" method="POST">

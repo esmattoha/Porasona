@@ -1,13 +1,28 @@
 const crypto = require('crypto');
+const { validationResult } = require('express-validator/check');
 const Questions = require('../models/questions');
 const Quiz = require('../models/quiz');
 
 exports.getAdminQuiz = (req, res, next) => {
+    let message = req.flash('error');
+    if (message.length > 0) {
+        message = message[0];
+    } else {
+        message = null;
+    }
     res.render('admin/quiz.ejs', {
+        path: '/admin/quiz',
         pageTitle: 'Admin Quiz',
-        path: '/admin/quiz'
+        errorMessage: message,
+        oldInput: {
+            title: '',
+            description: '',
+            totalQuestion: '',
+            marks: ''
+        },
+        validationErrors: []
     });
-
+    
 };
 exports.getAdminQuestions = (req, res, next) => {
     const quizId = req.query.quizId;
@@ -19,11 +34,32 @@ exports.getAdminQuestions = (req, res, next) => {
             if (totalQ === questions.length) {
                 res.send('<h2> Question overloaded!!</h2><br>')
             } else {
+                let message = req.flash('error');
+                if (message.length > 0) {
+                    message = message[0];
+                } else {
+                    message = null;
+                }
                 res.render('admin/questions.ejs', {
-                    pageTitle: 'Admin Questions',
                     path: '/admin/questions',
-                    quizId: quizId
-                })
+                    pageTitle: 'Admin Questions',
+                    quizId: quizId,
+                    errorMessage: message,
+                    oldInput: {
+                        title: '',
+                        op1: '',
+                        op2: '',
+                        op3: '',
+                        op4:'',
+                        answer:''
+                    },
+                    validationErrors: []
+                });
+                // res.render('admin/questions.ejs', {
+                //     pageTitle: 'Admin Questions',
+                //     path: '/admin/questions',
+                //     quizId: quizId
+                // })
             }
         })
             .catch(err => {
@@ -47,6 +83,21 @@ exports.postAdminQuiz = (req, res, next) => {
     const totalQuestion = req.body.totalQuestion;
     const marks = req.body.marks;
 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).render('admin/quiz.ejs', {
+            path: '/admin/quiz',
+            pageTitle: 'Admin Quiz',
+            errorMessage: errors.array()[0].msg,
+            oldInput: {
+                title:title,
+                description: description,
+                totalQuestion: totalQuestion,
+                marks: marks
+            },
+            validationErrors: errors.array()
+        });
+    }
     const quiz = new Quiz({
         title: title,
         description: description,
@@ -71,7 +122,23 @@ exports.postAdminQuestions = (req, res, next) => {
     const answer = req.body.answer;
     const quizId = req.body.quizId;
 
-    
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).render('admin/quiz.ejs', {
+            path: '/admin/quiz',
+            pageTitle: 'Admin Quiz',
+            errorMessage: errors.array()[0].msg,
+            oldInput: {
+                title:title,
+                op1:op1,
+                op2:op2,
+                op3:op3,
+                op4:op4,
+                answer:answer
+            },
+            validationErrors: errors.array()
+        });
+    }
     const question = new Questions({
         title: title,
         options: {
