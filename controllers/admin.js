@@ -31,7 +31,7 @@ exports.getAdminQuestions = (req, res, next) => {
         totalQ = quiz.totalQuestion
         Questions.find().where('quizId', quizId).then(questions => {
             if (totalQ === questions.length) {
-                res.send('<h2> Question overloaded!!</h2><br>')
+                res.redirect('/admin/quiz');
             } else {
                 let message = req.flash('error');
                 if (message.length > 0) {
