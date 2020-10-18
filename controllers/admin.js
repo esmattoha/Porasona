@@ -22,13 +22,12 @@ exports.getAdminQuiz = (req, res, next) => {
         },
         validationErrors: []
     });
-    
+
 };
 exports.getAdminQuestions = (req, res, next) => {
     const quizId = req.query.quizId;
     let totalQ = 0;
     Quiz.findOne({ _id: quizId }).then(quiz => {
-        console.log(quiz)
         totalQ = quiz.totalQuestion
         Questions.find().where('quizId', quizId).then(questions => {
             if (totalQ === questions.length) {
@@ -46,20 +45,16 @@ exports.getAdminQuestions = (req, res, next) => {
                     quizId: quizId,
                     errorMessage: message,
                     oldInput: {
-                        title: '',
+                        question: '',
                         op1: '',
                         op2: '',
                         op3: '',
-                        op4:'',
-                        answer:''
+                        op4: '',
+                        answer: ''
                     },
                     validationErrors: []
                 });
-                // res.render('admin/questions.ejs', {
-                //     pageTitle: 'Admin Questions',
-                //     path: '/admin/questions',
-                //     quizId: quizId
-                // })
+                
             }
         })
             .catch(err => {
@@ -72,6 +67,11 @@ exports.getAdminQuestions = (req, res, next) => {
         error.httpStatusCode = 406;
         return next(error, 'Something went wrong');
     })
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        })
 
 
 
@@ -90,7 +90,7 @@ exports.postAdminQuiz = (req, res, next) => {
             pageTitle: 'Admin Quiz',
             errorMessage: errors.array()[0].msg,
             oldInput: {
-                title:title,
+                title: title,
                 description: description,
                 totalQuestion: totalQuestion,
                 marks: marks
@@ -109,12 +109,14 @@ exports.postAdminQuiz = (req, res, next) => {
             res.redirect('/admin/questions?quizId=' + result._id);
         })
         .catch(err => {
-            console.log(err);
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
         });
 
 };
 exports.postAdminQuestions = (req, res, next) => {
-    const title = req.body.title;
+    const question = req.body.question;
     const op1 = req.body.op1;
     const op2 = req.body.op2;
     const op3 = req.body.op3;
@@ -129,18 +131,18 @@ exports.postAdminQuestions = (req, res, next) => {
             pageTitle: 'Admin Quiz',
             errorMessage: errors.array()[0].msg,
             oldInput: {
-                title:title,
-                op1:op1,
-                op2:op2,
-                op3:op3,
-                op4:op4,
-                answer:answer
+                question: question,
+                op1: op1,
+                op2: op2,
+                op3: op3,
+                op4: op4,
+                answer: answer
             },
             validationErrors: errors.array()
         });
     }
-    const question = new Questions({
-        title: title,
+    const questions = new Questions({
+        question: question,
         options: {
             op1: op1,
             op2: op2,
@@ -150,11 +152,13 @@ exports.postAdminQuestions = (req, res, next) => {
         answer: answer,
         quizId: quizId
     });
-    question.save()
+    questions.save()
         .then(result => {
             res.redirect('/admin/questions?quizId=' + quizId);
         })
         .catch(err => {
-            console.log(err);
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
         });
 };

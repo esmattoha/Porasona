@@ -23,11 +23,12 @@
           <a class="nav-link" href="/signup">Sign Up <span class="sr-only">(current)</span></a>
         </li>
       <% }else { %>
-        <form class="form-inline my-2 my-lg-0" action="/logout" method="POST">
-          <input type="hidden" value="<%= csrfToken %>"  name="_csrf">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
-          
-        </form>
+        <li  >
+          <form  action="/logout" method="POST">
+            <input type="hidden" value="<%= csrfToken %>"  name="_csrf">
+            <button  class="logout_btn"  type="submit">Logout</button>
+          </form>
+        </li>
        <% } %>
   </div>
 </nav>

@@ -1,7 +1,6 @@
 const express = require('express');
 const { check, body } = require('express-validator/check');
 const adminController = require('../controllers/admin');
-const Questions = require('../models/questions');
 const isAuth = require('../middleware/is-Auth');
 const router = express.Router();
 
@@ -36,11 +35,11 @@ router.get('/questions', isAuth, adminController.getAdminQuestions);
 
 router.post('/questions',
     [
-        body('title')
+        body('question')
             .trim()
             .isLength({ min: 3 })
-            .withMessage('Title have to be atleast 3 charecter!.')
-            .isAlpha().withMessage('title must be alphabet letters.'),
+            .withMessage('Question have to be atleast 3 charecter!.')
+            .isAlpha().withMessage('Question must be alphabet letters.'),
         [
             body('op1')
                 .trim()

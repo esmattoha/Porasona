@@ -1,4 +1,5 @@
 <%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
@@ -6,16 +7,16 @@
 
 <form class="container" action="/admin/questions" method="POST">
     <% if (errorMessage) { %>
-        <div ><%= errorMessage %></div>
+        <div class="user-message user-message--error"><%= errorMessage %></div>
     <% } %>
     <div class="form-group">
-        <label for="title">Question </label> 
+        <label for="question">Question </label> 
         <input class="form-control"
-                class="<%= validationErrors.find(e => e.param === 'title') ? 'invalid' : '' %>" 
+                class="<%= validationErrors.find(e => e.param === 'question') ? 'invalid' : '' %>" 
                 type="text"
-                name="title" 
-                id="title" 
-                value="<%= oldInput.title %>">
+                name="question" 
+                id="question" 
+                value="<%= oldInput.question %>">
     </div>
     <input type="hidden" name="quizId" value="<%= quizId %>">
     <div class="form-group">
@@ -63,11 +64,11 @@
             value="<%= oldInput.answer %>">
     </div>
     
-    <form action="/admin/questions" method="POST">
+    
         <input type="hidden" value="<%= csrfToken %>"  name="_csrf">
         <button type="submit" class="btn btn-primary">Submit</button>
         
-    </form>
+    
   </form>
 
   <%- include('../includes/end.ejs') %>

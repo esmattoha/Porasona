@@ -34,7 +34,7 @@ const userRoutes = require('./routes/users');
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use( 
   session({
   secret: 'my secret',
@@ -71,6 +71,7 @@ app.use((req, res, next) => {
 app.use('/admin' , adminRoutes);
 app.use( authRoutes);
 app.use(userRoutes);
+app.get('/500', errorController.get500);
 app.use(errorController.get404);
 
 mongoose
